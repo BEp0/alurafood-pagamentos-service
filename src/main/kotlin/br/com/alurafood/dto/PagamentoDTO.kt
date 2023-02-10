@@ -1,40 +1,42 @@
-package br.com.alurafood.model
+package br.com.alurafood.dto
 
-import jakarta.persistence.*
-import jakarta.persistence.EnumType.STRING
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Positive
-import jakarta.validation.constraints.Size
+import br.com.alurafood.model.Pagamento
+import br.com.alurafood.model.Status
 import java.math.BigDecimal
 
-@Entity
-data class Pagamento (
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+data class PagamentoDTO (
     val id: Long,
-
-    @NotNull @Positive
     val valor: BigDecimal,
-
-    @NotBlank @Size(max = 100)
     val nome: String,
-
-    @NotBlank @Size(max = 19)
     val numero: String,
-
-    @NotBlank @Size(max = 7)
     val expiracao: String,
-
-    @NotBlank @Size(max = 3)
     val codigo: String,
-
-    @NotNull @Enumerated(STRING)
     val status: Status,
-
-    @NotNull
     val pedidoId: Long,
-
-    @NotNull
     val formaDePagamento: Long
-)
+) {
+    companion object{
+        fun toDTO(pagamento: Pagamento) = PagamentoDTO(
+            pagamento.id,
+            pagamento.valor,
+            pagamento.nome,
+            pagamento.numero,
+            pagamento.expiracao,
+            pagamento.codigo,
+            pagamento.status,
+            pagamento.pedidoId,
+            pagamento.formaDePagamento
+        )
+        fun toEntity(pagamentoDTO: PagamentoDTO) = Pagamento(
+            pagamentoDTO.id,
+            pagamentoDTO.valor,
+            pagamentoDTO.nome,
+            pagamentoDTO.numero,
+            pagamentoDTO.expiracao,
+            pagamentoDTO.codigo,
+            pagamentoDTO.status,
+            pagamentoDTO.pedidoId,
+            pagamentoDTO.formaDePagamento
+        )
+    }
+}

@@ -16,7 +16,7 @@ import java.math.BigDecimal
 data class Pagamento (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long?,
 
     @NotNull @Positive
     val valor: BigDecimal,
@@ -41,4 +41,20 @@ data class Pagamento (
 
     @NotNull
     val formaDePagamento: Long
-)
+) {
+    companion object {
+        fun criar(id: Long, pagamento: Pagamento): Pagamento {
+            return Pagamento(
+                id,
+                pagamento.valor,
+                pagamento.nome,
+                pagamento.numero,
+                pagamento.expiracao,
+                pagamento.codigo,
+                pagamento.status,
+                pagamento.pedidoId,
+                pagamento.formaDePagamento
+            )
+        }
+    }
+}

@@ -5,7 +5,7 @@ import br.com.alurafood.model.Status
 import java.math.BigDecimal
 
 data class PagamentoDTO (
-    val id: Long,
+    val id: Long?,
     val valor: BigDecimal,
     val nome: String,
     val numero: String,

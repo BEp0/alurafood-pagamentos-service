@@ -3,7 +3,7 @@ package br.com.alurafood.controller
 import br.com.alurafood.dto.PagamentoDTO
 import br.com.alurafood.service.ConfirmarPagamentoService
 import br.com.alurafood.service.CrudPagamentoService
-import org.jetbrains.annotations.NotNull
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -44,8 +44,13 @@ class PagamentosController(
     }
 
     @PatchMapping("/{id}/confirmar")
+    @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "integracaoPendente")
     fun confirmarPagamento(@PathVariable id: Long) {
         confirmarPagamentoService.confirmar(id)
+    }
+
+    fun integracaoPendente(id: Long, e: Exception) {
+        confirmarPagamentoService.fallback(id)
     }
 
     @DeleteMapping("/{id}")

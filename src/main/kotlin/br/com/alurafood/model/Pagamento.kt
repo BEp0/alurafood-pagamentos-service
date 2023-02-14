@@ -1,7 +1,6 @@
 package br.com.alurafood.model
 
-import br.com.alurafood.model.Status.CONFIRMADO
-import br.com.alurafood.model.Status.CRIADO
+import br.com.alurafood.model.Status.*
 import jakarta.persistence.*
 import jakarta.persistence.EnumType.STRING
 import jakarta.validation.constraints.NotBlank
@@ -64,6 +63,17 @@ data class Pagamento (
             pagamento.expiracao,
             pagamento.codigo,
             CONFIRMADO,
+            pagamento.pedidoId,
+            pagamento.formaDePagamento
+        )
+        fun confirmarSemIntegracao(pagamento: Pagamento) = Pagamento(
+            pagamento.id,
+            pagamento.valor,
+            pagamento.nome,
+            pagamento.numero,
+            pagamento.expiracao,
+            pagamento.codigo,
+            CONFIRMADO_SEM_INTEGRACAO,
             pagamento.pedidoId,
             pagamento.formaDePagamento
         )

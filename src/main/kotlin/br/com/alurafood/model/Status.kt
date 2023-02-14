@@ -1,7 +1,8 @@
 package br.com.alurafood.model
 
-enum class Status(val valor: String) {
-    CRIADO("criado"),
-    CONFIRMADO("confirmado"),
-    CANCELADO("cancelado")
+enum class Status {
+    CRIADO,
+    CONFIRMADO,
+    CONFIRMADO_SEM_INTEGRACAO,
+    CANCELADO
 }

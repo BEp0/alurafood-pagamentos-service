@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS pagamento(
     forma_de_pagamento BIGINT NOT NULL,
 
     CHECK (valor >= 0),
-    CHECK (status in ('CRIADO', 'CONFIRMADO', 'CANCELADO')),
+    CHECK (status in ('CRIADO', 'CONFIRMADO', 'CANCELADO', 'CONFIRMADO_SEM_INTEGRACAO')),
     CHECK (forma_de_pagamento >= 0)
 );
 

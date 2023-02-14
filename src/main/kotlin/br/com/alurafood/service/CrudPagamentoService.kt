@@ -31,15 +31,15 @@ class CrudPagamentoService(
     }
 
     fun obterPorId(id: Long): PagamentoDTO {
-        val pagamento = pagamentoRepository.findByIdAndStatus(id, STATUS_BUSCA)
-            .orElseThrow { ExceptionsHandler.respostaNotFound(id) }
+        val pagamento = pagamentoRepository.findById(id)
+            .orElseThrow { ExceptionsHandler.notFound(id) }
         return PagamentoDTO.toDTO(pagamento)
     }
 
     @Transactional
     fun criar(pagamentoDTO: PagamentoDTO): PagamentoDTO {
 
-        val pagamento = PagamentoDTO.toEntity(pagamentoDTO)
+        val pagamento = PagamentoDTO.toEntityCriado(pagamentoDTO)
         val pagamentoSalvo = pagamentoRepository.save(pagamento)
 
         return PagamentoDTO.toDTO(pagamentoSalvo)
@@ -49,8 +49,9 @@ class CrudPagamentoService(
     fun atualizar(id: Long, pagamentoDTO: PagamentoDTO): PagamentoDTO {
 
         pagamentoValidation.validarPorId(id)
+        pagamentoValidation.validarStatus(pagamentoDTO.status)
 
-        val pagamentoAtualizado = Pagamento.criar(id, PagamentoDTO.toEntity(pagamentoDTO))
+        val pagamentoAtualizado = Pagamento.atualizar(id, PagamentoDTO.toEntity(pagamentoDTO))
         val pagamentoSalvo = pagamentoRepository.save(pagamentoAtualizado)
 
         return PagamentoDTO.toDTO(pagamentoSalvo)

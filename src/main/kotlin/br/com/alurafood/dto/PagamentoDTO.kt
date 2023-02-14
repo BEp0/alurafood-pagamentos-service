@@ -2,6 +2,7 @@ package br.com.alurafood.dto
 
 import br.com.alurafood.model.Pagamento
 import br.com.alurafood.model.Status
+import br.com.alurafood.model.Status.CRIADO
 import java.math.BigDecimal
 
 data class PagamentoDTO (
@@ -11,7 +12,7 @@ data class PagamentoDTO (
     val numero: String,
     val expiracao: String,
     val codigo: String,
-    val status: Status,
+    val status: Status?,
     val pedidoId: Long,
     val formaDePagamento: Long
 ) {
@@ -34,7 +35,18 @@ data class PagamentoDTO (
             pagamentoDTO.numero,
             pagamentoDTO.expiracao,
             pagamentoDTO.codigo,
-            pagamentoDTO.status,
+            pagamentoDTO.status!!,
+            pagamentoDTO.pedidoId,
+            pagamentoDTO.formaDePagamento
+        )
+        fun toEntityCriado(pagamentoDTO: PagamentoDTO) = Pagamento(
+            pagamentoDTO.id,
+            pagamentoDTO.valor,
+            pagamentoDTO.nome,
+            pagamentoDTO.numero,
+            pagamentoDTO.expiracao,
+            pagamentoDTO.codigo,
+            CRIADO,
             pagamentoDTO.pedidoId,
             pagamentoDTO.formaDePagamento
         )

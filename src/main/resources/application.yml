@@ -6,3 +6,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     password: postgres
     username: postgres
+  application:
+    name: pagamentos-ms
+server:
+  port: 0
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.int}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka

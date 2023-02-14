@@ -1,5 +1,7 @@
 package br.com.alurafood.model
 
+import br.com.alurafood.model.Status.CONFIRMADO
+import br.com.alurafood.model.Status.CRIADO
 import jakarta.persistence.*
 import jakarta.persistence.EnumType.STRING
 import jakarta.validation.constraints.NotBlank
@@ -43,18 +45,27 @@ data class Pagamento (
     val formaDePagamento: Long
 ) {
     companion object {
-        fun criar(id: Long, pagamento: Pagamento): Pagamento {
-            return Pagamento(
-                id,
-                pagamento.valor,
-                pagamento.nome,
-                pagamento.numero,
-                pagamento.expiracao,
-                pagamento.codigo,
-                pagamento.status,
-                pagamento.pedidoId,
-                pagamento.formaDePagamento
-            )
-        }
+        fun atualizar(id: Long, pagamento: Pagamento) = Pagamento(
+            id,
+            pagamento.valor,
+            pagamento.nome,
+            pagamento.numero,
+            pagamento.expiracao,
+            pagamento.codigo,
+            pagamento.status,
+            pagamento.pedidoId,
+            pagamento.formaDePagamento
+        )
+        fun confirmar(pagamento: Pagamento) = Pagamento(
+            pagamento.id,
+            pagamento.valor,
+            pagamento.nome,
+            pagamento.numero,
+            pagamento.expiracao,
+            pagamento.codigo,
+            CONFIRMADO,
+            pagamento.pedidoId,
+            pagamento.formaDePagamento
+        )
     }
 }

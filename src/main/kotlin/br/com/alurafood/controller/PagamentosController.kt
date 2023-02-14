@@ -1,21 +1,24 @@
 package br.com.alurafood.controller
 
 import br.com.alurafood.dto.PagamentoDTO
+import br.com.alurafood.service.ConfirmarPagamentoService
 import br.com.alurafood.service.CrudPagamentoService
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/pagamentos")
-class PagamentoController(
+class PagamentosController(
     @Autowired
-    val crudPagamentoService: CrudPagamentoService
+    private val crudPagamentoService: CrudPagamentoService,
+    @Autowired
+    private val confirmarPagamentoService: ConfirmarPagamentoService,
 ) {
-
     @GetMapping
     fun obterTodos(pageable: Pageable): Page<PagamentoDTO> = crudPagamentoService.obterTodos(pageable)
 
@@ -30,7 +33,7 @@ class PagamentoController(
     fun criar(@RequestBody pagamentoDTO: PagamentoDTO): ResponseEntity<PagamentoDTO> {
 
         val pagamentoResponse = crudPagamentoService.criar(pagamentoDTO)
-        return ResponseEntity.status(CREATED).body(pagamentoResponse)
+        return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoResponse)
     }
 
     @PutMapping("/{id}")
@@ -38,6 +41,11 @@ class PagamentoController(
 
         val pagamentoResponse = crudPagamentoService.atualizar(id, pagamentoDTO)
         return ResponseEntity.ok(pagamentoResponse)
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    fun confirmarPagamento(@PathVariable id: Long) {
+        confirmarPagamentoService.confirmar(id)
     }
 
     @DeleteMapping("/{id}")
